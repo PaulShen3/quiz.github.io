@@ -3,80 +3,710 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>工作信息评分</title>
-    <link rel="stylesheet" href="style.css">
+    <title>职场情况评估</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+            background: #f5f7fa;
+            padding: 20px;
+        }
+        
+        .container {
+            max-width: 500px;
+            margin: 0 auto;
+            background: white;
+            border-radius: 20px;
+            padding: 25px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.1);
+        }
+        
+        h1 {
+            font-size: 24px;
+            color: #333;
+            margin-bottom: 10px;
+            text-align: center;
+        }
+        
+        .subtitle {
+            text-align: center;
+            color: #666;
+            margin-bottom: 25px;
+            font-size: 14px;
+        }
+        
+        .question {
+            margin-bottom: 25px;
+            padding: 15px;
+            background: #f8f9fc;
+            border-radius: 16px;
+            border-left: 4px solid #4361ee;
+        }
+        
+        .question-label {
+            font-weight: 600;
+            color: #333;
+            margin-bottom: 12px;
+            font-size: 16px;
+        }
+        
+        .options {
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+        }
+        
+        .option {
+            display: flex;
+            align-items: center;
+            padding: 10px 15px;
+            background: white;
+            border-radius: 12px;
+            border: 1px solid #e0e0e0;
+            cursor: pointer;
+            transition: all 0.2s;
+        }
+        
+        .option:hover {
+            border-color: #4361ee;
+            background: #f0f4ff;
+        }
+        
+        .option.selected {
+            border-color: #4361ee;
+            background: #e8eeff;
+        }
+        
+        .option input[type="radio"] {
+            margin-right: 12px;
+            width: 18px;
+            height: 18px;
+            accent-color: #4361ee;
+        }
+        
+        .option-text {
+            flex: 1;
+            font-size: 15px;
+        }
+        
+        .option-emoji {
+            font-size: 20px;
+            margin-right: 10px;
+        }
+        
+        .input-field {
+            width: 100%;
+            padding: 15px;
+            border: 1px solid #e0e0e0;
+            border-radius: 12px;
+            font-size: 16px;
+            margin-top: 10px;
+        }
+        
+        .input-field:focus {
+            outline: none;
+            border-color: #4361ee;
+        }
+        
+        .row {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 10px;
+            margin-top: 10px;
+        }
+        
+        .tag-group {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 10px;
+            margin-top: 10px;
+        }
+        
+        .tag {
+            padding: 10px 20px;
+            background: white;
+            border: 1px solid #e0e0e0;
+            border-radius: 30px;
+            font-size: 14px;
+            cursor: pointer;
+            transition: all 0.2s;
+        }
+        
+        .tag.selected {
+            background: #4361ee;
+            color: white;
+            border-color: #4361ee;
+        }
+        
+        .submit-btn {
+            width: 100%;
+            padding: 18px;
+            background: #4361ee;
+            color: white;
+            border: none;
+            border-radius: 16px;
+            font-size: 18px;
+            font-weight: 600;
+            cursor: pointer;
+            margin: 20px 0;
+            transition: background 0.2s;
+        }
+        
+        .submit-btn:hover {
+            background: #3046c0;
+        }
+        
+        .result-card {
+            background: #f8f9fc;
+            border-radius: 20px;
+            padding: 25px;
+            margin-top: 20px;
+            text-align: center;
+        }
+        
+        .score-circle {
+            width: 120px;
+            height: 120px;
+            background: linear-gradient(145deg, #4361ee, #6c63ff);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin: 15px auto;
+            color: white;
+            font-size: 36px;
+            font-weight: bold;
+            box-shadow: 0 10px 20px rgba(67, 97, 238, 0.3);
+        }
+        
+        .comment-box {
+            background: white;
+            border-radius: 16px;
+            padding: 20px;
+            margin: 15px 0;
+            text-align: left;
+            line-height: 1.6;
+        }
+        
+        .badge {
+            display: inline-block;
+            padding: 5px 12px;
+            border-radius: 20px;
+            font-size: 12px;
+            font-weight: 600;
+            margin: 3px;
+        }
+        
+        .badge.green {
+            background: #e3fcef;
+            color: #0a7b4b;
+        }
+        
+        .badge.red {
+            background: #ffe8e8;
+            color: #c41e1e;
+        }
+        
+        .reset-btn {
+            padding: 12px 30px;
+            background: #6c757d;
+            color: white;
+            border: none;
+            border-radius: 12px;
+            font-size: 16px;
+            cursor: pointer;
+            margin-top: 15px;
+        }
+        
+        .section-title {
+            font-size: 18px;
+            font-weight: 600;
+            color: #333;
+            margin: 20px 0 10px;
+        }
+    </style>
 </head>
 <body>
     <div class="container">
-        <h1 class="title">工作信息评分系统</h1>
+        <h1>📊 职场综合评估</h1>
+        <div class="subtitle">12个问题 · 3分钟测出你的职场健康度</div>
         
-        <form id="workForm">
-            <div class="form-group">
-                <label for="name">姓名</label>
-                <input type="text" id="name" placeholder="请输入您的姓名" required>
-            </div>
-
-            <div class="form-group">
-                <label for="jobType">工作类型</label>
-                <select id="jobType" required>
-                    <option value="">请选择工作类型</option>
-                    <option value="it">IT/互联网</option>
-                    <option value="education">教育/培训</option>
-                    <option value="medical">医疗/健康</option>
-                    <option value="finance">金融/经济</option>
-                    <option value="service">服务业</option>
-                    <option value="other">其他</option>
-                </select>
-            </div>
-
-            <div class="form-group">
-                <label for="workYears">工作年限</label>
-                <select id="workYears" required>
-                    <option value="">请选择工作年限</option>
-                    <option value="0-1">1年以下</option>
-                    <option value="1-3">1-3年</option>
-                    <option value="3-5">3-5年</option>
-                    <option value="5-10">5-10年</option>
-                    <option value="10+">10年以上</option>
-                </select>
-            </div>
-
-            <div class="form-group">
-                <label for="monthlyIncome">月收入(元)</label>
-                <input type="number" id="monthlyIncome" min="0" step="1000" placeholder="请输入月收入" required>
-            </div>
-
-            <div class="form-group">
-                <label for="workSatisfaction">工作满意度 (1-10分)</label>
-                <input type="range" id="workSatisfaction" min="1" max="10" value="5">
-                <span id="satisfactionValue">5分</span>
-            </div>
-
-            <div class="form-group">
-                <label for="skills">专业技能 (可多选)</label>
-                <div class="checkbox-group">
-                    <label><input type="checkbox" name="skills" value="communication"> 沟通能力</label>
-                    <label><input type="checkbox" name="skills" value="teamwork"> 团队协作</label>
-                    <label><input type="checkbox" name="skills" value="leadership"> 领导能力</label>
-                    <label><input type="checkbox" name="skills" value="technical"> 专业技术</label>
-                    <label><input type="checkbox" name="skills" value="creative"> 创新能力</label>
+        <form id="surveyForm">
+            <!-- 1. 年收入 -->
+            <div class="question">
+                <div class="question-label">💰 1. 你的年收入（税前）是多少？</div>
+                <div class="options">
+                    <label class="option">
+                        <input type="radio" name="income" value="12" required>
+                        <span class="option-text">12万以下</span>
+                    </label>
+                    <label class="option">
+                        <input type="radio" name="income" value="18">
+                        <span class="option-text">12-18万</span>
+                    </label>
+                    <label class="option">
+                        <input type="radio" name="income" value="25">
+                        <span class="option-text">18-25万</span>
+                    </label>
+                    <label class="option">
+                        <input type="radio" name="income" value="35">
+                        <span class="option-text">25-35万</span>
+                    </label>
+                    <label class="option">
+                        <input type="radio" name="income" value="50">
+                        <span class="option-text">35-50万</span>
+                    </label>
+                    <label class="option">
+                        <input type="radio" name="income" value="60">
+                        <span class="option-text">50万以上</span>
+                    </label>
                 </div>
             </div>
 
-            <button type="submit" class="submit-btn">获取评分报告</button>
+            <!-- 2. 五险一金缴纳情况 -->
+            <div class="question">
+                <div class="question-label">🔒 2. 五险一金缴纳情况</div>
+                <div class="options">
+                    <label class="option">
+                        <input type="radio" name="insurance" value="10" required>
+                        <span class="option-text">全额缴纳</span>
+                    </label>
+                    <label class="option">
+                        <input type="radio" name="insurance" value="7">
+                        <span class="option-text">按最低标准缴纳</span>
+                    </label>
+                    <label class="option">
+                        <input type="radio" name="insurance" value="4">
+                        <span class="option-text">只交五险，没公积金</span>
+                    </label>
+                    <label class="option">
+                        <input type="radio" name="insurance" value="0">
+                        <span class="option-text">什么都不交</span>
+                    </label>
+                </div>
+            </div>
+
+            <!-- 3. 食堂 -->
+            <div class="question">
+                <div class="question-label">🍚 3. 公司食堂情况</div>
+                <div class="options">
+                    <label class="option">
+                        <input type="radio" name="canteen" value="10" required>
+                        <span class="option-text">有食堂，免费三餐</span>
+                    </label>
+                    <label class="option">
+                        <input type="radio" name="canteen" value="8">
+                        <span class="option-text">有食堂，有餐补</span>
+                    </label>
+                    <label class="option">
+                        <input type="radio" name="canteen" value="5">
+                        <span class="option-text">有食堂，自费</span>
+                    </label>
+                    <label class="option">
+                        <input type="radio" name="canteen" value="2">
+                        <span class="option-text">没食堂，自己解决</span>
+                    </label>
+                </div>
+            </div>
+
+            <!-- 4. 健身房 -->
+            <div class="question">
+                <div class="question-label">💪 4. 公司健身房/运动福利</div>
+                <div class="options">
+                    <label class="option">
+                        <input type="radio" name="gym" value="10" required>
+                        <span class="option-text">有免费健身房</span>
+                    </label>
+                    <label class="option">
+                        <input type="radio" name="gym" value="8">
+                        <span class="option-text">有健身补贴/年卡报销</span>
+                    </label>
+                    <label class="option">
+                        <input type="radio" name="gym" value="5">
+                        <span class="option-text">有合作健身房，优惠价</span>
+                    </label>
+                    <label class="option">
+                        <input type="radio" name="gym" value="0">
+                        <span class="option-text">没有任何运动福利</span>
+                    </label>
+                </div>
+            </div>
+
+            <!-- 5. 每天工作时间 -->
+            <div class="question">
+                <div class="question-label">⏰ 5. 每天实际工作时间</div>
+                <div class="options">
+                    <label class="option">
+                        <input type="radio" name="workHours" value="10" required>
+                        <span class="option-text">8小时以内</span>
+                    </label>
+                    <label class="option">
+                        <input type="radio" name="workHours" value="8">
+                        <span class="option-text">8-9小时</span>
+                    </label>
+                    <label class="option">
+                        <input type="radio" name="workHours" value="6">
+                        <span class="option-text">9-10小时</span>
+                    </label>
+                    <label class="option">
+                        <input type="radio" name="workHours" value="4">
+                        <span class="option-text">10-11小时</span>
+                    </label>
+                    <label class="option">
+                        <input type="radio" name="workHours" value="2">
+                        <span class="option-text">11小时以上</span>
+                    </label>
+                </div>
+            </div>
+
+            <!-- 6. 通勤时间 -->
+            <div class="question">
+                <div class="question-label">🚌 6. 单程通勤时间</div>
+                <div class="options">
+                    <label class="option">
+                        <input type="radio" name="commute" value="10" required>
+                        <span class="option-text">30分钟以内</span>
+                    </label>
+                    <label class="option">
+                        <input type="radio" name="commute" value="8">
+                        <span class="option-text">30-45分钟</span>
+                    </label>
+                    <label class="option">
+                        <input type="radio" name="commute" value="6">
+                        <span class="option-text">45-60分钟</span>
+                    </label>
+                    <label class="option">
+                        <input type="radio" name="commute" value="4">
+                        <span class="option-text">60-90分钟</span>
+                    </label>
+                    <label class="option">
+                        <input type="radio" name="commute" value="2">
+                        <span class="option-text">90分钟以上</span>
+                    </label>
+                </div>
+            </div>
+
+            <!-- 7. 同事关系 -->
+            <div class="question">
+                <div class="question-label">🤝 7. 同事关系如何？</div>
+                <div class="options">
+                    <label class="option">
+                        <input type="radio" name="colleagues" value="10" required>
+                        <span class="option-text">非常好，像朋友一样</span>
+                    </label>
+                    <label class="option">
+                        <input type="radio" name="colleagues" value="8">
+                        <span class="option-text">比较好，相处愉快</span>
+                    </label>
+                    <label class="option">
+                        <input type="radio" name="colleagues" value="6">
+                        <span class="option-text">一般，工作关系</span>
+                    </label>
+                    <label class="option">
+                        <input type="radio" name="colleagues" value="4">
+                        <span class="option-text">有点紧张</span>
+                    </label>
+                    <label class="option">
+                        <input type="radio" name="colleagues" value="2">
+                        <span class="option-text">很差，勾心斗角</span>
+                    </label>
+                </div>
+            </div>
+
+            <!-- 8. 工作压力 -->
+            <div class="question">
+                <div class="question-label">😫 8. 工作压力大吗？</div>
+                <div class="options">
+                    <label class="option">
+                        <input type="radio" name="pressure" value="10" required>
+                        <span class="option-text">很轻松，游刃有余</span>
+                    </label>
+                    <label class="option">
+                        <input type="radio" name="pressure" value="8">
+                        <span class="option-text">适度压力，能应对</span>
+                    </label>
+                    <label class="option">
+                        <input type="radio" name="pressure" value="6">
+                        <span class="option-text">压力有点大</span>
+                    </label>
+                    <label class="option">
+                        <input type="radio" name="pressure" value="4">
+                        <span class="option-text">压力很大</span>
+                    </label>
+                    <label class="option">
+                        <input type="radio" name="pressure" value="2">
+                        <span class="option-text">难以承受</span>
+                    </label>
+                </div>
+            </div>
+
+            <!-- 9. 职业发展空间 -->
+            <div class="question">
+                <div class="question-label">📈 9. 职业发展空间</div>
+                <div class="options">
+                    <label class="option">
+                        <input type="radio" name="development" value="10" required>
+                        <span class="option-text">空间很大，晋升快</span>
+                    </label>
+                    <label class="option">
+                        <input type="radio" name="development" value="8">
+                        <span class="option-text">有一定空间</span>
+                    </label>
+                    <label class="option">
+                        <input type="radio" name="development" value="6">
+                        <span class="option-text">一般，主要熬年限</span>
+                    </label>
+                    <label class="option">
+                        <input type="radio" name="development" value="4">
+                        <span class="option-text">空间很小</span>
+                    </label>
+                    <label class="option">
+                        <input type="radio" name="development" value="2">
+                        <span class="option-text">没有空间</span>
+                    </label>
+                </div>
+            </div>
+
+            <!-- 10. 年假天数 -->
+            <div class="question">
+                <div class="question-label">🏖️ 10. 每年带薪年假天数</div>
+                <div class="options">
+                    <label class="option">
+                        <input type="radio" name="vacation" value="10" required>
+                        <span class="option-text">10天以上</span>
+                    </label>
+                    <label class="option">
+                        <input type="radio" name="vacation" value="8">
+                        <span class="option-text">7-10天</span>
+                    </label>
+                    <label class="option">
+                        <input type="radio" name="vacation" value="6">
+                        <span class="option-text">5-7天</span>
+                    </label>
+                    <label class="option">
+                        <input type="radio" name="vacation" value="4">
+                        <span class="option-text">3-5天</span>
+                    </label>
+                    <label class="option">
+                        <input type="radio" name="vacation" value="2">
+                        <span class="option-text">3天以下</span>
+                    </label>
+                </div>
+            </div>
+
+            <!-- 11. 年终奖情况 -->
+            <div class="question">
+                <div class="question-label">🎁 11. 年终奖情况</div>
+                <div class="options">
+                    <label class="option">
+                        <input type="radio" name="bonus" value="10" required>
+                        <span class="option-text">3个月以上工资</span>
+                    </label>
+                    <label class="option">
+                        <input type="radio" name="bonus" value="8">
+                        <span class="option-text">2-3个月工资</span>
+                    </label>
+                    <label class="option">
+                        <input type="radio" name="bonus" value="6">
+                        <span class="option-text">1-2个月工资</span>
+                    </label>
+                    <label class="option">
+                        <input type="radio" name="bonus" value="4">
+                        <span class="option-text">1个月以内</span>
+                    </label>
+                    <label class="option">
+                        <input type="radio" name="bonus" value="0">
+                        <span class="option-text">没有年终奖</span>
+                    </label>
+                </div>
+            </div>
+
+            <!-- 12. 加班频率 -->
+            <div class="question">
+                <div class="question-label">🌙 12. 每周加班情况</div>
+                <div class="options">
+                    <label class="option">
+                        <input type="radio" name="overtime" value="10" required>
+                        <span class="option-text">几乎不加班</span>
+                    </label>
+                    <label class="option">
+                        <input type="radio" name="overtime" value="8">
+                        <span class="option-text">偶尔加班（1-2天）</span>
+                    </label>
+                    <label class="option">
+                        <input type="radio" name="overtime" value="6">
+                        <span class="option-text">经常加班（3-4天）</span>
+                    </label>
+                    <label class="option">
+                        <input type="radio" name="overtime" value="4">
+                        <span class="option-text">每天加班</span>
+                    </label>
+                    <label class="option">
+                        <input type="radio" name="overtime" value="2">
+                        <span class="option-text">周末也加班</span>
+                    </label>
+                </div>
+            </div>
+
+            <button type="submit" class="submit-btn">查看评估结果</button>
         </form>
 
-        <div id="result" class="result-card" style="display: none;">
-            <h2>评分报告</h2>
-            <div class="score-circle">
-                <span id="score">0</span>
+        <!-- 结果展示 -->
+        <div id="result" style="display: none;">
+            <div class="result-card">
+                <h2>📋 你的职场评估报告</h2>
+                
+                <div class="score-circle" id="scoreDisplay">0</div>
+                
+                <div class="comment-box" id="overallComment"></div>
+                
+                <div style="text-align: left;">
+                    <div class="section-title">✅ 做得好的地方</div>
+                    <div id="strengths" style="margin-bottom: 15px;"></div>
+                    
+                    <div class="section-title">⚠️ 可以改进的地方</div>
+                    <div id="weaknesses" style="margin-bottom: 15px;"></div>
+                    
+                    <div class="section-title">💡 具体建议</div>
+                    <div id="suggestions" style="background: #f0f4ff; padding: 15px; border-radius: 12px; line-height: 1.6;"></div>
+                </div>
+                
+                <button class="reset-btn" onclick="resetForm()">重新评估</button>
             </div>
-            <div id="comment" class="comment"></div>
-            <div id="suggestions" class="suggestions"></div>
-            <button class="reset-btn" onclick="resetForm()">重新填写</button>
         </div>
     </div>
 
-    <script src="script.js"></script>
+    <script>
+        // 存储所有答案
+        let answers = {};
+
+        // 表单提交
+        document.getElementById('surveyForm').addEventListener('submit', function(e) {
+            e.preventDefault();
+            
+            // 获取所有答案
+            answers = {
+                income: parseInt(document.querySelector('input[name="income"]:checked')?.value || 0),
+                insurance: parseInt(document.querySelector('input[name="insurance"]:checked')?.value || 0),
+                canteen: parseInt(document.querySelector('input[name="canteen"]:checked')?.value || 0),
+                gym: parseInt(document.querySelector('input[name="gym"]:checked')?.value || 0),
+                workHours: parseInt(document.querySelector('input[name="workHours"]:checked')?.value || 0),
+                commute: parseInt(document.querySelector('input[name="commute"]:checked')?.value || 0),
+                colleagues: parseInt(document.querySelector('input[name="colleagues"]:checked')?.value || 0),
+                pressure: parseInt(document.querySelector('input[name="pressure"]:checked')?.value || 0),
+                development: parseInt(document.querySelector('input[name="development"]:checked')?.value || 0),
+                vacation: parseInt(document.querySelector('input[name="vacation"]:checked')?.value || 0),
+                bonus: parseInt(document.querySelector('input[name="bonus"]:checked')?.value || 0),
+                overtime: parseInt(document.querySelector('input[name="overtime"]:checked')?.value || 0)
+            };
+
+            // 计算总分（每个维度满分10分，总分120分，换算成百分制）
+            const totalRaw = Object.values(answers).reduce((a, b) => a + b, 0);
+            const totalScore = Math.round((totalRaw / 120) * 100);
+            
+            // 显示分数
+            document.getElementById('scoreDisplay').textContent = totalScore;
+            
+            // 生成评语
+            let comment = '';
+            if (totalScore >= 85) {
+                comment = '✨ 优秀！你的职场综合条件很好，福利待遇和工作状态都很棒。';
+            } else if (totalScore >= 70) {
+                comment = '👍 良好！整体不错，有少数方面可以优化。';
+            } else if (totalScore >= 55) {
+                comment = '📊 中等。有些方面需要关注，建议看看具体建议。';
+            } else if (totalScore >= 40) {
+                comment = '⚠️ 一般。可能需要考虑一些改变了。';
+            } else {
+                comment = '❗ 需要注意。建议认真思考职业规划。';
+            }
+            document.getElementById('overallComment').textContent = comment;
+            
+            // 找出优势和劣势
+            const strengths = [];
+            const weaknesses = [];
+            
+            if (answers.income >= 35) strengths.push('💰 收入较高');
+            else if (answers.income <= 18) weaknesses.push('💰 收入有提升空间');
+            
+            if (answers.insurance >= 10) strengths.push('🔒 五险一金全额缴纳');
+            else if (answers.insurance <= 4) weaknesses.push('🔒 五险一金缴纳不足');
+            
+            if (answers.canteen >= 8) strengths.push('🍚 食堂福利好');
+            else if (answers.canteen <= 2) weaknesses.push('🍚 没有食堂福利');
+            
+            if (answers.gym >= 8) strengths.push('💪 有健身福利');
+            else if (answers.gym <= 0) weaknesses.push('💪 没有运动福利');
+            
+            if (answers.workHours >= 8) strengths.push('⏰ 工作时间合理');
+            else if (answers.workHours <= 4) weaknesses.push('⏰ 工作时间偏长');
+            
+            if (answers.commute >= 8) strengths.push('🚌 通勤方便');
+            else if (answers.commute <= 4) weaknesses.push('🚌 通勤时间较长');
+            
+            if (answers.colleagues >= 8) strengths.push('🤝 同事关系融洽');
+            else if (answers.colleagues <= 4) weaknesses.push('🤝 同事关系待改善');
+            
+            if (answers.pressure >= 8) strengths.push('😊 工作压力适中');
+            else if (answers.pressure <= 4) weaknesses.push('😫 工作压力较大');
+            
+            if (answers.development >= 8) strengths.push('📈 发展空间好');
+            else if (answers.development <= 4) weaknesses.push('📈 发展空间有限');
+            
+            if (answers.vacation >= 8) strengths.push('🏖️ 年假充足');
+            else if (answers.vacation <= 4) weaknesses.push('🏖️ 年假较少');
+            
+            if (answers.bonus >= 8) strengths.push('🎁 年终奖丰厚');
+            else if (answers.bonus <= 4) weaknesses.push('🎁 年终奖较少');
+            
+            if (answers.overtime >= 8) strengths.push('🌙 加班少');
+            else if (answers.overtime <= 4) weaknesses.push('🌙 加班较多');
+            
+            document.getElementById('strengths').innerHTML = strengths.length > 0 
+                ? strengths.map(s => `<span class="badge green">${s}</span>`).join(' ')
+                : '暂无特别突出的优势';
+            
+            document.getElementById('weaknesses').innerHTML = weaknesses.length > 0
+                ? weaknesses.map(w => `<span class="badge red">${w}</span>`).join(' ')
+                : '没有明显短板，很棒！';
+            
+            // 生成具体建议
+            let suggestions = '';
+            if (answers.income <= 18) suggestions += '• 了解行业薪资水平，准备谈薪或跳槽\n';
+            if (answers.insurance <= 4) suggestions += '• 五险一金是基本保障，建议找正规公司\n';
+            if (answers.canteen <= 2) suggestions += '• 可以带饭或找附近实惠的餐厅\n';
+            if (answers.gym <= 0) suggestions += '• 可以在家做些简单运动，保持健康\n';
+            if (answers.workHours <= 4) suggestions += '• 提高工作效率，减少无效加班\n';
+            if (answers.commute <= 4) suggestions += '• 考虑错峰出行或听播客利用时间\n';
+            if (answers.colleagues <= 4) suggestions += '• 主动参与团队活动，改善关系\n';
+            if (answers.pressure <= 4) suggestions += '• 学会放松，必要时寻求帮助\n';
+            if (answers.development <= 4) suggestions += '• 制定学习计划，提升技能\n';
+            if (answers.vacation <= 4) suggestions += '• 合理规划年假，劳逸结合\n';
+            if (answers.bonus <= 4) suggestions += '• 和领导沟通绩效目标\n';
+            if (answers.overtime <= 4) suggestions += '• 学会拒绝不合理加班\n';
+            
+            if (suggestions === '') {
+                suggestions = '你的职场状态很好，继续保持！可以开始考虑下一步的职业规划了。';
+            }
+            
+            document.getElementById('suggestions').innerHTML = suggestions.replace(/\n/g, '<br>');
+            
+            // 显示结果，隐藏表单
+            document.getElementById('surveyForm').style.display = 'none';
+            document.getElementById('result').style.display = 'block';
+        });
+
+        // 重置表单
+        function resetForm() {
+            document.getElementById('surveyForm').style.display = 'block';
+            document.getElementById('result').style.display = 'none';
+            document.getElementById('surveyForm').reset();
+        }
+    </script>
 </body>
 </html>
